@@ -4,10 +4,14 @@ import xlsx
 
 from native_dialogs import callDialogFileOpen,callDialogFileSave
 
+# 如果是64位，所有的-m32换成-m64。我在Msys2+Mingw64成功
+
 # 仅支持32位 只能GCC build
 # 需要修改.nimble\pkgs\zip-0.1.0\zip\private\libzip_all.c
 # 即使是32位系统也要--cpu:i386 -t:-m32 -l:-m32
 # nim c --cincludes:include -l:zlib1.dll --cpu:i386 -t:-m32 -l:-m32 -t:-DWIN32  -d:profile xlsx2csv.nim
+
+
 
 # Dependencies
 
@@ -17,7 +21,7 @@ from native_dialogs import callDialogFileOpen,callDialogFileSave
 #requires "native_dialogs" 
 
 {.passC:"-Iinclude -m32 -DWIN32".}
-{.passL:"zlib1.dll -m32".}
+{.passL:"-lz -m64".}
 
 {.hint: "Compiled with `-Iinclude -m32 -DWIN32`".}
 {.hint: "Linked with  `zlib1.dll -m32`".}
